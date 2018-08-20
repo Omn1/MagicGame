@@ -34,7 +34,11 @@ public:
 
 	void initGrass(sf::Vector2f position);
 
+	void initDynamicSpell(DynamicSpell * spell, sf::Vector2f start, sf::Vector2f finish, sf::Vector2f direction, bool isHorizontal);
+
 	void initArcaneBolt(sf::Vector2f start, sf::Vector2f finish, sf::Vector2f castOffset, bool isHorizontal);
+
+	void initFireBall(sf::Vector2f start, sf::Vector2f finish, sf::Vector2f direction, bool isHorizontal);
 
 	/*void initHouse(sf::Vector2f position)
 	{

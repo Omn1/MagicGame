@@ -70,7 +70,7 @@ void World::updateObjects(float interactTime)
 	std::vector<DynamicSpell*> spells = projectiles.getObjects();
 	for (auto obj : spells) {
 		obj->updateState(interactTime);
-		if (!obj->getRectangle().intersects(worldRect))projectiles.removeObject(obj);
+		if ((!obj->getRectangle().intersects(worldRect)) || (obj->hasLifeTime && obj->lifeTime <= 0))projectiles.removeObject(obj);
 	}
 	interact(interactTime);
 }
@@ -114,14 +114,26 @@ inline void World::initGrass(sf::Vector2f position)
 	grass->AssignTexture((sf::Vector2f)(spriteMap[grass->getSpriteName(0)]->getSize()));
 }
 
+void World::initDynamicSpell(DynamicSpell *spell, sf::Vector2f start, sf::Vector2f finish, sf::Vector2f direction, bool isHorizontal) {
+	spell->setDirection(finish - start);
+	projectiles.addObject(spell);
+	spell->AssignTexture((sf::Vector2f)(spriteMap[spell->getSpriteName(0)]->getSize()));
+	//spell->position = start - spell->getTextureSize()*0.5f;
+	spell->position = start - sf::Vector2f(spell->collisionBox.left, spell->collisionBox.top) + sf::Vector2f(spell->collisionBox.width*direction.x, spell->collisionBox.height*direction.y);
+
+	if (isHorizontal)spell->position -= sf::Vector2f(0, spell->collisionBox.height*0.5f);
+	else spell->position -= sf::Vector2f(spell->collisionBox.width*0.5f, 0);
+	//std::cout << (spell->getSpeed()) << std::endl;
+}
+
 void World::initArcaneBolt(sf::Vector2f start, sf::Vector2f finish, sf::Vector2f direction, bool isHorizontal)
 {
-	ArcaneBolt *bolt = new ArcaneBolt(finish - start);
-	projectiles.addObject(bolt);
-	bolt->AssignTexture((sf::Vector2f)(spriteMap[bolt->getSpriteName(0)]->getSize()));
-	//bolt->position = start - bolt->getTextureSize()*0.5f;
-	bolt->position = start - sf::Vector2f(bolt->collisionBox.left, bolt->collisionBox.top) + sf::Vector2f(bolt->collisionBox.width*direction.x, bolt->collisionBox.height*direction.y);
-	if (isHorizontal)bolt->position -= sf::Vector2f(0, bolt->collisionBox.height*0.5f);
-	else bolt->position -= sf::Vector2f(bolt->collisionBox.width*0.5f, 0);
-	//std::cout << (bolt->getSpeed()) << std::endl;
+	ArcaneBolt *spell = new ArcaneBolt(finish - start);
+	initDynamicSpell(spell, start, finish, direction, isHorizontal);
+}
+
+void World::initFireBall(sf::Vector2f start, sf::Vector2f finish, sf::Vector2f direction, bool isHorizontal)
+{
+	FireBall *spell = new FireBall(finish - start);
+	initDynamicSpell(spell, start, finish, direction, isHorizontal);
 }

@@ -2,10 +2,7 @@
 #include "DynamicObject.h"
 class Grass : public DynamicObject {
 public:
-	Grass()
-	{
-		isBackground = true;
-	}
+	Grass() {}
 	void AssignTexture(sf::Vector2f textureSize)
 	{
 		setTextureSize(textureSize);
@@ -13,6 +10,10 @@ public:
 	std::string getSpriteName(float interactTime)
 	{
 		return "grass";
+	}
+	float getDrawOrderCriteria()
+	{
+		return -2000000000;
 	}
 };
 

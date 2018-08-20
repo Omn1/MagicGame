@@ -3,8 +3,6 @@
 class Object {
 public:
 	Object() {
-		isBackground = false;
-		isProjectile = false;
 		textureScale = 1;
 	};
 
@@ -13,7 +11,6 @@ public:
 	sf::Vector2f position;
 	virtual std::string getSpriteName(float interactTime) = 0;
 
-	bool isBackground, isProjectile;
 	float textureScale;
 	sf::Vector2f getTextureSize() {
 		return textureSize * textureScale;
@@ -28,10 +25,8 @@ public:
 		return tCollisionBox;
 	}
 
-	float getDrawOrderCriteria()
+	virtual float getDrawOrderCriteria()
 	{
-		if (isBackground)
-			return -2000000000;
 		return position.y + textureSize.y * textureScale;
 	}
 	sf::FloatRect getRectangle() { return sf::FloatRect(position, getTextureSize()); }

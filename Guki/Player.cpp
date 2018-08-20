@@ -92,7 +92,7 @@ void Player::handleSpellCast(sf::Vector2f mousePos)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
 		setSpeedBuff(1.5, 10000);
 	}
-	else world->initArcaneBolt(getSpellStartPoint(), mousePos, getCastOffset(direction), (direction=="LEFT" || direction=="RIGHT"));
+	else world->initFireBall(getSpellStartPoint(), mousePos, getCastOffset(direction), (direction=="LEFT" || direction=="RIGHT"));
 }
 
 void Player::handleInput(sf::Vector2f mousePos)
@@ -136,7 +136,8 @@ void Player::setHp(float thp)
 
 void Player::takeDamage(float dmg)
 {
-	hp = std::min(maxHp, std::max(0.0f, hp - dmg * armorMultiplier));
+	//hp = std::min(maxHp, std::max(0.0f, hp - dmg * armorMultiplier));
+	hp -= dmg;
 }
 
 void Player::updateState(float interactTime)
@@ -156,7 +157,8 @@ void Player::updateState(float interactTime)
 		hpPerTickTime = 0;
 	}
 	else {
-		hpPerTick -= interactTime;
+		hpPerTickTime -= interactTime;
+		takeDamage(hpPerTick * interactTime);
 	}
 }
 

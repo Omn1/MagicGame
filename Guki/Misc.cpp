@@ -33,6 +33,7 @@ sf::Vector2f getCastOffset(std::string direction) {
 		return sf::Vector2f(-1, 0);
 	else if (direction == "RIGHT")
 		return sf::Vector2f(0, 0);
+	return sf::Vector2f(0, 0);
 }
 
 sf::Vector2f transpose(sf::Vector2f a)

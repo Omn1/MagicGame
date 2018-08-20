@@ -18,4 +18,7 @@ grass img/grass.png 0 0 68 68
 house1 img/furnaceHouseFire.png 0 0 105 96
 house2 img/furnaceHouseFire.png 105 0 105 96
 house3 img/furnaceHouseFire.png 210 0 105 96
-ArcaneBolt img/arcaneBolt.png 0 0 10 10
+ArcaneBolt1 img/arcaneBolt.png 0 0 10 10
+FireBall1 img/FireBall.png 0 0 66 32
+FireBall2 img/FireBall.png 0 32 66 32
+FireBall3 img/FireBall.png 0 64 66 32
