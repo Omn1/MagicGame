@@ -95,46 +95,32 @@ void Player::handleSpellCast(sf::Vector2f mousePos)
 	else world->initArcaneBolt(getSpellStartPoint(), mousePos, getCastOffset(direction), (direction=="LEFT" || direction=="RIGHT"));
 }
 
-void Player::handleInput()
+void Player::handleInput(sf::Vector2f mousePos)
 {
-	isMoving = true;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-	{
-		direction = "LEFT";
+	if (isCCW(position + sf::Vector2f(0, getTextureSize().x), position + sf::Vector2f(getTextureSize().y, 0), mousePos)) {
+		if (isCCW(position, position + transpose(getTextureSize()), mousePos)) {
+			direction = "UP";
+		}
+		else {
+			direction = "LEFT";
+		}
 	}
-	else
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		{
+	else {
+		if (isCCW(position, position + transpose(getTextureSize()), mousePos)) {
 			direction = "RIGHT";
 		}
-		else
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-			{
-				direction = "UP";
-			}
-			else
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-				{
-					direction = "DOWN";
-				}
-				else isMoving = false;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-		dy = -1;
+		else {
+			direction = "DOWN";
+		}
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-		dy = 1;
+	isMoving = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
+	if (!isMoving) {
+		dx = dy = 0;
 	}
 	else {
-		dy = 0;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-		dx = -1;
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-		dx = 1;
-	}
-	else {
-		dx = 0;
+		sf::Vector2f moveDirection = mousePos - (position + 0.5f*getTextureSize());
+		dx = moveDirection.x;
+		dy = moveDirection.y;
 	}
 }
 

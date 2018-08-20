@@ -39,3 +39,13 @@ sf::Vector2f transpose(sf::Vector2f a)
 {
 	return sf::Vector2f(a.y, a.x);
 }
+
+float orientedArea(sf::Vector2f a, sf::Vector2f b, sf::Vector2f c)
+{
+	return ((b.x - a.x)*(b.y + a.y) + (c.x - b.x)*(c.y + b.y) + (a.x - c.x)*(a.y + c.y));
+}
+
+bool isCCW(sf::Vector2f a, sf::Vector2f b, sf::Vector2f c)
+{
+	return orientedArea(a, b, c) >= 0;
+}

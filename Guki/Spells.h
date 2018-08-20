@@ -18,7 +18,7 @@ public:
 class ArcaneBolt : public DynamicSpell {
 public:
 	ArcaneBolt(sf::Vector2f direction) {
-		defaultSpeed = 0.2;
+		defaultSpeed = 1.5;
 		damage = 5;
 		dx = direction.x;
 		dy = direction.y;

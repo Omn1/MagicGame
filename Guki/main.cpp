@@ -71,13 +71,11 @@ int main()
 				window.setView(mainView = sf::View(sf::FloatRect(0.f, 0.f,
 					static_cast<float>(window.getSize().x),
 					static_cast<float>(window.getSize().y))));
-			else if (event.type == sf::Event::KeyPressed) {
-				if (event.key.code == sf::Keyboard::Return) {
+			else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Button::Right) {
 					world.player->handleSpellCast((sf::Vector2f)sf::Mouse::getPosition(window));
-				}
 			}
 		}
-		world.player->handleInput();
+		world.player->handleInput((sf::Vector2f)sf::Mouse::getPosition(window));
 		
 		// Iterate
 		//world.player->move(interactTime);

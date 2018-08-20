@@ -12,7 +12,7 @@ public:
 	sf::Vector2f getSpellStartPoint();
 	World *world;
 	void handleSpellCast(sf::Vector2f mousePos);
-	void handleInput();
+	void handleInput(sf::Vector2f mousePos);
 	float getHp();
 	void setHp(float thp);
 	void takeDamage(float dmg);
