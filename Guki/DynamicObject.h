@@ -29,6 +29,8 @@ protected:
 		sf::Vector2f deltaPos(dx * getSpeed() * interactTime, dy * getSpeed() * interactTime);
 		//std::cout << deltaPos.x << " " << deltaPos.y << std::endl;
 		position += deltaPos;
+		collisionArea.x += deltaPos.x;
+		collisionArea.y += deltaPos.y;
 	}
 };
 

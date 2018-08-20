@@ -1,6 +1,7 @@
 #pragma once
 #include "DynamicObject.h"
 #include "Player.h"
+#include "Misc.h"
 
 class DynamicSpell : public DynamicObject {
 public:
@@ -20,9 +21,10 @@ public:
 		}
 	}
 	void setDirection(sf::Vector2f direction) {
-		dx = direction.x;
-		dy = direction.y;
+		collisionArea.dx = dx = direction.x;
+		collisionArea.dy = dy = direction.y;
 	}
+	virtual sf::Vector2f getCenter() { return tgetTextureSize()*0.5f; }
 	virtual std::string getSpriteName(float interactTime) {
 		animationTime += interactTime;
 		if (animationTime >= timeForNewSprite)
@@ -60,18 +62,21 @@ public:
 	void AssignTexture(sf::Vector2f tTextureSize)
 	{
 		setTextureSize(tTextureSize);
-		collisionBox = sf::FloatRect(sf::Vector2f(0,0),getTextureSize());
+		rotation = getAngle(sf::Vector2f(dx, dy));
+		std::cout << rotation << std::endl;
+		collisionArea = CollisionArea(sf::FloatRect(position, tgetTextureSize()), get_deltas(direction));
 	}
 };
 
 class FireBall : public DynamicSpell {
 public:
 	FireBall(sf::Vector2f direction) {
-		defaultSpeed = 0.3;
-		damage = 0.01;
+		defaultSpeed = 0.8;
+		damage = 15;
 		dx = direction.x;
 		dy = direction.y;
 		animationLength = 3;
+		isPiercing = 1;
 		spellName = "FireBall";
 	}
 	void interactWithPlayer(Player *player, float interactTime) {
@@ -81,6 +86,8 @@ public:
 	void AssignTexture(sf::Vector2f tTextureSize)
 	{
 		setTextureSize(tTextureSize);
-		collisionBox = sf::FloatRect(sf::Vector2f(0, 0), getTextureSize());
+		rotation = getAngle(sf::Vector2f(dx, dy));
+		std::cout << rotation << std::endl;
+		collisionArea = CollisionArea(sf::FloatRect(position, tgetTextureSize()), sf::Vector2f(dx,dy));
 	}
 };

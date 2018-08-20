@@ -56,6 +56,7 @@ void World::draw(sf::RenderTarget & target, float drawTime)
 		sf::Sprite sprite;
 		sprite.setScale(sf::Vector2f(textureScale, textureScale));
 		sprite.setPosition(obj->position);
+		sprite.setRotation(obj->rotation);
 		sprite.setTexture(*(spriteMap[obj->getSpriteName(drawTime)]));
 		target.draw(sprite);
 	}
@@ -70,6 +71,7 @@ void World::updateObjects(float interactTime)
 	std::vector<DynamicSpell*> spells = projectiles.getObjects();
 	for (auto obj : spells) {
 		obj->updateState(interactTime);
+		//std::cout << (obj->position.x) << " " << (obj->position.y) << std::endl;
 		if ((!obj->getRectangle().intersects(worldRect)) || (obj->hasLifeTime && obj->lifeTime <= 0))projectiles.removeObject(obj);
 	}
 	interact(interactTime);
@@ -78,11 +80,12 @@ void World::updateObjects(float interactTime)
 void World::interact(float interactTime)
 {
 	for (auto spell : projectiles.getObjects()) {
-		if (spell->getCollisionBox().intersects(player->getCollisionBox())) {
+		if (spell->collisionArea.intersects(player->collisionArea)) {
 			spell->interactWithPlayer(player, interactTime);
 			if (!spell->isPiercing)projectiles.removeObject(spell);
 		}
 	}
+	//std::cout << player->getHp() << " " << player->position.x << " " << player->position.y << std::endl;
 	std::cout << player->getHp() << std::endl;
 }
 
@@ -104,6 +107,7 @@ inline void World::initPlayer()
 	dynamicGrid.addObject(player);
 	player->AssignTexture((sf::Vector2f)(spriteMap[player->getSpriteName(0)]->getSize()));
 	player->world = this;
+	//std::cout << (player->tgetTextureSize().x) << " " << (player->tgetTextureSize().y) << std::endl;
 }
 
 inline void World::initGrass(sf::Vector2f position)
@@ -114,26 +118,27 @@ inline void World::initGrass(sf::Vector2f position)
 	grass->AssignTexture((sf::Vector2f)(spriteMap[grass->getSpriteName(0)]->getSize()));
 }
 
-void World::initDynamicSpell(DynamicSpell *spell, sf::Vector2f start, sf::Vector2f finish, sf::Vector2f direction, bool isHorizontal) {
+void World::initDynamicSpell(DynamicSpell *spell, sf::Vector2f start, sf::Vector2f finish) {
 	spell->setDirection(finish - start);
 	projectiles.addObject(spell);
+	spell->position = start - spell->getCenter();
 	spell->AssignTexture((sf::Vector2f)(spriteMap[spell->getSpriteName(0)]->getSize()));
-	//spell->position = start - spell->getTextureSize()*0.5f;
+	/*//spell->position = start - spell->getTextureSize()*0.5f;
 	spell->position = start - sf::Vector2f(spell->collisionBox.left, spell->collisionBox.top) + sf::Vector2f(spell->collisionBox.width*direction.x, spell->collisionBox.height*direction.y);
 
 	if (isHorizontal)spell->position -= sf::Vector2f(0, spell->collisionBox.height*0.5f);
-	else spell->position -= sf::Vector2f(spell->collisionBox.width*0.5f, 0);
+	else spell->position -= sf::Vector2f(spell->collisionBox.width*0.5f, 0);*/
 	//std::cout << (spell->getSpeed()) << std::endl;
 }
 
-void World::initArcaneBolt(sf::Vector2f start, sf::Vector2f finish, sf::Vector2f direction, bool isHorizontal)
+void World::initArcaneBolt(sf::Vector2f start, sf::Vector2f finish)
 {
 	ArcaneBolt *spell = new ArcaneBolt(finish - start);
-	initDynamicSpell(spell, start, finish, direction, isHorizontal);
+	initDynamicSpell(spell, start, finish);
 }
 
-void World::initFireBall(sf::Vector2f start, sf::Vector2f finish, sf::Vector2f direction, bool isHorizontal)
+void World::initFireBall(sf::Vector2f start, sf::Vector2f finish)
 {
 	FireBall *spell = new FireBall(finish - start);
-	initDynamicSpell(spell, start, finish, direction, isHorizontal);
+	initDynamicSpell(spell, start, finish);
 }

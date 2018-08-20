@@ -1,7 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <cmath>
-#include "Object.h"
+
+extern sf::RenderWindow mainWindow;
+class Object;
 
 void normalize(float &x, float &y);
 
@@ -16,3 +18,9 @@ sf::Vector2f transpose(sf::Vector2f a);
 float orientedArea(sf::Vector2f a, sf::Vector2f b, sf::Vector2f c);
 
 bool isCCW(sf::Vector2f a, sf::Vector2f b, sf::Vector2f c);
+
+bool segIntersect_1(float a, float b, float c, float d);
+
+bool segIntersect(sf::Vector2f a, sf::Vector2f b, sf::Vector2f c, sf::Vector2f d);
+
+float getAngle(sf::Vector2f direction);

@@ -47,14 +47,13 @@ public:
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "SFML works!");
-	sf::View mainView(window.getDefaultView());
+	sf::View mainView(mainWindow.getDefaultView());
 
 	sf::Clock clock;
 
 	world.worldRect = sf::FloatRect(0, 0, 1280, 720);
 
-	while (window.isOpen())
+	while (mainWindow.isOpen())
 	{
 		// Track time
 		float interactTime = (float)clock.getElapsedTime().asMicroseconds()/1000.0f;
@@ -63,27 +62,27 @@ int main()
 
 		// Handle events
 		sf::Event event;
-		while (window.pollEvent(event))
+		while (mainWindow.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
-				window.close();
+				mainWindow.close();
 			else if(event.type == sf::Event::Resized)
-				window.setView(mainView = sf::View(sf::FloatRect(0.f, 0.f,
-					static_cast<float>(window.getSize().x),
-					static_cast<float>(window.getSize().y))));
+				mainWindow.setView(mainView = sf::View(sf::FloatRect(0.f, 0.f,
+					static_cast<float>(mainWindow.getSize().x),
+					static_cast<float>(mainWindow.getSize().y))));
 			else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Button::Right) {
-					world.player->handleSpellCast((sf::Vector2f)sf::Mouse::getPosition(window));
+					world.player->handleSpellCast((sf::Vector2f)sf::Mouse::getPosition(mainWindow));
 			}
 		}
-		world.player->handleInput((sf::Vector2f)sf::Mouse::getPosition(window));
+		world.player->handleInput((sf::Vector2f)sf::Mouse::getPosition(mainWindow));
 		
 		// Iterate
 		//world.player->move(interactTime);
 		world.updateObjects(interactTime);
 		// Draw
-		window.clear(sf::Color(255, 255, 255));
-		world.draw(window,interactTime);
-		window.display();
+		mainWindow.clear(sf::Color(255, 255, 255));
+		world.draw(mainWindow,interactTime);
+		mainWindow.display();
 	}
 
 	return 0;

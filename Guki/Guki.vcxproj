@@ -114,6 +114,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CollisionArea.cpp" />
     <ClCompile Include="DynamicObject.cpp" />
     <ClCompile Include="Grass.cpp" />
     <ClCompile Include="GridList.cpp" />
@@ -124,6 +125,7 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CollisionArea.h" />
     <ClInclude Include="DynamicObject.h" />
     <ClInclude Include="Grass.h" />
     <ClInclude Include="GridList.h" />

@@ -63,28 +63,13 @@ inline std::string Player::getSpriteName(float interactTime)
 void Player::AssignTexture(sf::Vector2f textureSize)
 {
 	setTextureSize(textureSize);
-	collisionBox = sf::FloatRect(sf::Vector2f(0, 0), getTextureSize());
+	collisionArea = CollisionArea(sf::FloatRect(position, tgetTextureSize()), sf::Vector2f(1,0));
 }
 
 sf::Vector2f Player::getSpellStartPoint()
 {
 	//return position + transpose(getTextureSize())*0.5f + sf::Vector2f(getTextureSize().y*get_deltas(direction).x, getTextureSize().x*get_deltas(direction).y);
-	sf::Vector2f startPoint = position + sf::Vector2f(collisionBox.left, collisionBox.top);
-	if (direction == "DOWN") {
-		startPoint += sf::Vector2f(0, collisionBox.height);
-		startPoint.x += collisionBox.width*0.5f;
-	}
-	else if (direction == "UP") {
-		startPoint.x += collisionBox.width*0.5f;
-	}
-	else if (direction == "LEFT") {
-		startPoint.y += collisionBox.height*0.5f;
-	}
-	else if (direction == "RIGHT") {
-		startPoint += sf::Vector2f(collisionBox.width, 0);
-		startPoint.y += collisionBox.height*0.5f;
-	}
-	return startPoint;
+	return position + tgetTextureSize()*0.5f;
 }
 
 void Player::handleSpellCast(sf::Vector2f mousePos)
@@ -92,13 +77,13 @@ void Player::handleSpellCast(sf::Vector2f mousePos)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
 		setSpeedBuff(1.5, 10000);
 	}
-	else world->initFireBall(getSpellStartPoint(), mousePos, getCastOffset(direction), (direction=="LEFT" || direction=="RIGHT"));
+	else world->initFireBall(getSpellStartPoint(), mousePos);
 }
 
 void Player::handleInput(sf::Vector2f mousePos)
 {
-	if (isCCW(position + sf::Vector2f(0, getTextureSize().x), position + sf::Vector2f(getTextureSize().y, 0), mousePos)) {
-		if (isCCW(position, position + transpose(getTextureSize()), mousePos)) {
+	if (isCCW(position + sf::Vector2f(0, tgetTextureSize().y), position + sf::Vector2f(tgetTextureSize().x, 0), mousePos)) {
+		if (isCCW(position, position + tgetTextureSize(), mousePos)) {
 			direction = "UP";
 		}
 		else {
@@ -106,7 +91,7 @@ void Player::handleInput(sf::Vector2f mousePos)
 		}
 	}
 	else {
-		if (isCCW(position, position + transpose(getTextureSize()), mousePos)) {
+		if (isCCW(position, position + tgetTextureSize(), mousePos)) {
 			direction = "RIGHT";
 		}
 		else {
@@ -118,7 +103,7 @@ void Player::handleInput(sf::Vector2f mousePos)
 		dx = dy = 0;
 	}
 	else {
-		sf::Vector2f moveDirection = mousePos - (position + 0.5f*getTextureSize());
+		sf::Vector2f moveDirection = mousePos - (position + 0.5f*tgetTextureSize());
 		dx = moveDirection.x;
 		dy = moveDirection.y;
 	}
