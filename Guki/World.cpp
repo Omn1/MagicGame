@@ -131,8 +131,9 @@ void World::initDynamicSpell(DynamicSpell *spell, sf::Vector2f start, sf::Vector
 	spell->setDirection(finish - start);
 	projectiles.addObject(spell);
 	spell->caster = player;
-	spell->position = start - spell->getCenter();
 	spell->AssignTexture((sf::Vector2f)(spriteMap[spell->getSpriteName(0)]->getSize()));
+	//std::cout << (spell->getCenter().x) << " " << (spell->getCenter().y) << std::endl;
+	spell->position = start - spell->getCenter();
 	/*//spell->position = start - spell->getTextureSize()*0.5f;
 	spell->position = start - sf::Vector2f(spell->collisionBox.left, spell->collisionBox.top) + sf::Vector2f(spell->collisionBox.width*direction.x, spell->collisionBox.height*direction.y);
 

@@ -24,7 +24,12 @@ public:
 		collisionArea.dx = dx = direction.x;
 		collisionArea.dy = dy = direction.y;
 	}
-	virtual sf::Vector2f getCenter() { return tgetTextureSize()*0.5f; }
+	virtual sf::Vector2f getNotRotatedCenter() { return tgetTextureSize()*0.5f;  }
+	sf::Vector2f getCenter() {
+		sf::Vector2f nrc = getNotRotatedCenter();
+		normalize(dx, dy);
+		return sf::Vector2f(nrc.x*dx - nrc.y*dy, nrc.x*dy + nrc.y*dx);
+	}
 	virtual std::string getSpriteName(float interactTime) {
 		animationTime += interactTime;
 		if (animationTime >= timeForNewSprite)
