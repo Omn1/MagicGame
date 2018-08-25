@@ -44,6 +44,7 @@ public:
 	bool isPiercing;
 	bool hasLifeTime;
 	std::string spellName;
+	Player *caster;
 };
 
 class ArcaneBolt : public DynamicSpell {
@@ -63,7 +64,6 @@ public:
 	{
 		setTextureSize(tTextureSize);
 		rotation = getAngle(sf::Vector2f(dx, dy));
-		std::cout << rotation << std::endl;
 		collisionArea = CollisionArea(sf::FloatRect(position, tgetTextureSize()), get_deltas(direction));
 	}
 };
@@ -87,7 +87,6 @@ public:
 	{
 		setTextureSize(tTextureSize);
 		rotation = getAngle(sf::Vector2f(dx, dy));
-		std::cout << rotation << std::endl;
 		collisionArea = CollisionArea(sf::FloatRect(position, tgetTextureSize()), sf::Vector2f(dx,dy));
 	}
 };

@@ -12,6 +12,7 @@ inline bool World::init() {
 	projectiles.textureScale = 4;
 	bool result = initSpriteMap();
 	initPlayer();
+	initOpponent();
 	generate(3000, 3000);
 	return result;
 }
@@ -80,7 +81,7 @@ void World::updateObjects(float interactTime)
 void World::interact(float interactTime)
 {
 	for (auto spell : projectiles.getObjects()) {
-		if (spell->collisionArea.intersects(player->collisionArea)) {
+		if (spell->collisionArea.intersects(player->collisionArea) && spell->caster!=player) {
 			spell->interactWithPlayer(player, interactTime);
 			if (!spell->isPiercing)projectiles.removeObject(spell);
 		}
@@ -110,6 +111,14 @@ inline void World::initPlayer()
 	//std::cout << (player->tgetTextureSize().x) << " " << (player->tgetTextureSize().y) << std::endl;
 }
 
+void World::initOpponent()
+{
+	opponent = new Player();
+	dynamicGrid.addObject(opponent);
+	opponent->AssignTexture((sf::Vector2f)(spriteMap[opponent->getSpriteName(0)]->getSize()));
+	opponent->world = this;
+}
+
 inline void World::initGrass(sf::Vector2f position)
 {
 	Grass *grass = new Grass();
@@ -121,6 +130,7 @@ inline void World::initGrass(sf::Vector2f position)
 void World::initDynamicSpell(DynamicSpell *spell, sf::Vector2f start, sf::Vector2f finish) {
 	spell->setDirection(finish - start);
 	projectiles.addObject(spell);
+	spell->caster = player;
 	spell->position = start - spell->getCenter();
 	spell->AssignTexture((sf::Vector2f)(spriteMap[spell->getSpriteName(0)]->getSize()));
 	/*//spell->position = start - spell->getTextureSize()*0.5f;

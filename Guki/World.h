@@ -32,6 +32,8 @@ public:
 
 	void initPlayer();
 
+	void initOpponent();
+
 	void initGrass(sf::Vector2f position);
 
 	void initDynamicSpell(DynamicSpell * spell, sf::Vector2f start, sf::Vector2f finish);
@@ -53,6 +55,7 @@ public:
 	GridList<DynamicSpell> projectiles;
 	std::map<std::string, sf::Texture*> spriteMap;
 	Player *player;
+	Player *opponent;
 	float textureScale;
 
 	sf::FloatRect worldRect;
