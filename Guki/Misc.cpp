@@ -2,6 +2,7 @@
 #include "Object.h"
 
 sf::RenderWindow mainWindow(sf::VideoMode(1280, 720), "SFML works!");
+
 const float PI = 3.1415926535;
 void normalize(float &x, float &y) {
 	if (x == 0 && y == 0)
@@ -65,4 +66,12 @@ bool segIntersect(sf::Vector2f a, sf::Vector2f b, sf::Vector2f c, sf::Vector2f d
 
 float getAngle(sf::Vector2f direction) {
 	return atan2(direction.y, direction.x) / PI * 180;
+}
+
+bool checkSignPressed(std::string sign)
+{
+	for (int i = 0; i < sign.size(); i++) {
+		if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key(sign[i] - 'a')))return 0;
+	}
+	return 1;
 }

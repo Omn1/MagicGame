@@ -12,6 +12,7 @@ public:
 	sf::Vector2f getSpellStartPoint();
 	World *world;
 	void handleSpellCast(sf::Vector2f mousePos);
+	void handleSpellSignInput();
 	void handleInput(sf::Vector2f mousePos);
 	float getHp();
 	void setHp(float thp);
@@ -22,10 +23,12 @@ public:
 	void setArmorBuff(float buff, float buffTime);
 	void setHpPerTickBuff(float buff, float buffTime);
 	float getSpeed();
+	std::vector<std::string> currentSigns;
 protected:	
 	float hp, maxHp;
 	float speedMultiplier, speedMultiplierTime;
 	float armorMultiplier, armorMultiplierTime;
 	float hpPerTick, hpPerTickTime;
+	std::vector<std::string> availableSigns;
 };
 

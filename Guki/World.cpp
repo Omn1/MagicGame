@@ -13,6 +13,7 @@ inline bool World::init() {
 	bool result = initSpriteMap();
 	initPlayer();
 	initOpponent();
+	initNeededSigns();
 	generate(3000, 3000);
 	return result;
 }
@@ -40,6 +41,16 @@ inline bool World::initSpriteMap()
 		spriteMap[textureName] = texture;
 	}
 	ifs.close();
+}
+
+void World::initNeededSigns()
+{
+	neededSigns["fireBall"] = { "projectile", "inferno", "potentia" };
+	neededSigns["arcaneBolt"] = { "projectile", "incantatem" };
+	neededSigns["sunStrike"] = { "inferno", "incantatem", "trap", "explosion" };
+	neededSigns["magicShield"] = { "protego", "incantatem", "potentia" };
+	neededSigns["instantHeal"] = { "vitalis", "protego" };
+	neededSigns["speedUp"] = { "supido", "incantatem" };
 }
 
 void World::draw(sf::RenderTarget & target, float drawTime)
@@ -87,7 +98,10 @@ void World::interact(float interactTime)
 		}
 	}
 	//std::cout << player->getHp() << " " << player->position.x << " " << player->position.y << std::endl;
-	std::cout << player->getHp() << std::endl;
+	//std::cout << player->getHp() << std::endl;
+	for (auto s : player->currentSigns)
+		std::cout << s << " ";
+	std::cout << std::endl;
 }
 
 inline void World::generate(int xSize, int ySize)
@@ -152,4 +166,10 @@ void World::initFireBall(sf::Vector2f start, sf::Vector2f finish)
 {
 	FireBall *spell = new FireBall(finish - start);
 	initDynamicSpell(spell, start, finish);
+}
+
+void World::initSunStrike(sf::Vector2f start)
+{
+	SunStrike *spell = new SunStrike();
+	initDynamicSpell(spell, start, sf::Vector2f(start.x + 1, start.y));
 }

@@ -24,3 +24,5 @@ bool segIntersect_1(float a, float b, float c, float d);
 bool segIntersect(sf::Vector2f a, sf::Vector2f b, sf::Vector2f c, sf::Vector2f d);
 
 float getAngle(sf::Vector2f direction);
+
+bool checkSignPressed(std::string sign);

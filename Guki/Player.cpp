@@ -4,9 +4,9 @@
 Player::Player()
 {
 	defaultSpeed = 0.5;
-	animationLength = 3;
-
+	animationLength = 2;
 	hp = maxHp = 200;
+	availableSigns = { "inferno","projectile","potentia","protego","incantatem","supido","vitalis","trap","explosion" };
 	resetBuffs();
 }
 
@@ -74,10 +74,21 @@ sf::Vector2f Player::getSpellStartPoint()
 
 void Player::handleSpellCast(sf::Vector2f mousePos)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
-		setSpeedBuff(1.5, 10000);
-	}
-	else world->initFireBall(getSpellStartPoint(), mousePos);
+	if (currentSigns == world->neededSigns["fireBall"])world->initFireBall(getSpellStartPoint(), mousePos);
+	if (currentSigns == world->neededSigns["arcaneBolt"])world->initArcaneBolt(getSpellStartPoint(), mousePos);
+	if (currentSigns == world->neededSigns["sunStrike"])world->initSunStrike(mousePos);
+	if (currentSigns == world->neededSigns["magicShield"])setArmorBuff(0.8, 10000);
+	if (currentSigns == world->neededSigns["instantHeal"])takeDamage(-30/armorMultiplier);
+	if (currentSigns == world->neededSigns["speedUp"])setSpeedBuff(1.5, 5000);
+	currentSigns.clear();
+}
+
+void Player::handleSpellSignInput()
+{
+	for (int i = 0; i < availableSigns.size(); i++)
+		if (checkSignPressed(availableSigns[i]))
+			if(currentSigns.empty() || currentSigns.back()!=availableSigns[i])
+				currentSigns.push_back(availableSigns[i]);
 }
 
 void Player::handleInput(sf::Vector2f mousePos)
@@ -107,6 +118,7 @@ void Player::handleInput(sf::Vector2f mousePos)
 		dx = moveDirection.x;
 		dy = moveDirection.y;
 	}
+	handleSpellSignInput();
 }
 
 float Player::getHp()
@@ -121,8 +133,8 @@ void Player::setHp(float thp)
 
 void Player::takeDamage(float dmg)
 {
-	//hp = std::min(maxHp, std::max(0.0f, hp - dmg * armorMultiplier));
-	hp -= dmg;
+	hp = std::min(maxHp, std::max(0.0f, hp - dmg * armorMultiplier));
+	//hp -= dmg;
 }
 
 void Player::updateState(float interactTime)

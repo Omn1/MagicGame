@@ -22,6 +22,8 @@ public:
 
 	bool initSpriteMap();
 
+	void initNeededSigns();
+
 	void draw(sf::RenderTarget &target, float drawTime);
 
 	void updateObjects(float interactTime);
@@ -42,6 +44,8 @@ public:
 
 	void initFireBall(sf::Vector2f start, sf::Vector2f finish);
 
+	void initSunStrike(sf::Vector2f start);
+
 	/*void initHouse(sf::Vector2f position)
 	{
 		House *house = new House();
@@ -57,7 +61,7 @@ public:
 	Player *player;
 	Player *opponent;
 	float textureScale;
-
+	std::map<std::string,std::vector<std::string> > neededSigns;
 	sf::FloatRect worldRect;
 };
 

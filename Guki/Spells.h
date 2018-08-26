@@ -95,3 +95,27 @@ public:
 		collisionArea = CollisionArea(sf::FloatRect(position, tgetTextureSize()), sf::Vector2f(dx,dy));
 	}
 };
+
+class SunStrike : public DynamicSpell {
+public:
+	SunStrike() {
+		defaultSpeed = 0.0;
+		damage = 10;
+		animationLength = 3;
+		isPiercing = 1;
+		hasLifeTime = 1;
+		timeForNewSprite = 200;
+		lifeTime = 600;
+		spellName = "SunStrike";
+	}
+	void interactWithPlayer(Player *player, float interactTime) {
+		player->takeDamage(damage);
+		player->setSpeedBuff(0.5, 5000);
+	}
+	void AssignTexture(sf::Vector2f tTextureSize)
+	{
+		setTextureSize(tTextureSize);
+		rotation = getAngle(sf::Vector2f(dx, dy));
+		collisionArea = CollisionArea(sf::FloatRect(position, tgetTextureSize()), sf::Vector2f(dx, dy));
+	}
+};
