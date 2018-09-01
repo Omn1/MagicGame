@@ -51,7 +51,7 @@ int main()
 
 	sf::Clock clock;
 
-	world.worldRect = sf::FloatRect(0, 0, 1280, 720);
+	world.worldRect = sf::FloatRect(0, 0, 800, 600);
 
 	while (mainWindow.isOpen())
 	{

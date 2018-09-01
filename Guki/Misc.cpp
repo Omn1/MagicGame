@@ -1,7 +1,7 @@
 #include "Misc.h"
 #include "Object.h"
 
-sf::RenderWindow mainWindow(sf::VideoMode(1280, 720), "SFML works!");
+sf::RenderWindow mainWindow(sf::VideoMode(800,600), "SFML works!");
 
 const float PI = 3.1415926535;
 void normalize(float &x, float &y) {

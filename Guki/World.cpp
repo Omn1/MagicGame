@@ -128,7 +128,7 @@ inline void World::initPlayer()
 void World::initOpponent()
 {
 	opponent = new Player();
-	dynamicGrid.addObject(opponent);
+	//dynamicGrid.addObject(opponent);
 	opponent->AssignTexture((sf::Vector2f)(spriteMap[opponent->getSpriteName(0)]->getSize()));
 	opponent->world = this;
 }
